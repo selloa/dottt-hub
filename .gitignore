@@ -1,0 +1,45 @@
+# Python (build script)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+.cursor/
+*.swp
+*.swo
+*~
+
+# Local preview / temp
+*.log
+*.tmp
+*.bak
+
+# Author drafts (local only — never publish these)
+notes/
+drafts/
+content/drafts/
+*.draft.md
+contents.local.md
