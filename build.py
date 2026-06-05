@@ -112,6 +112,19 @@ def tag_video_links(html: str) -> str:
     return ANCHOR_TAG.sub(add_video_class, html)
 
 
+def open_external_links_in_new_tab(html: str) -> str:
+    def add_new_tab(match: re.Match[str]) -> str:
+        href = match.group(1)
+        rest = match.group(2)
+        if not href.startswith(("http://", "https://")):
+            return match.group(0)
+        if 'target="' in rest or "target='" in rest:
+            return match.group(0)
+        return f'<a href="{href}" target="_blank" rel="noopener noreferrer"{rest}>'
+
+    return ANCHOR_TAG.sub(add_new_tab, html)
+
+
 def postprocess_body(html: str) -> str:
     html = PRE_BLOCK.sub(
         r'<div class="markview-code-block-wrapper"><pre>\1</pre></div>',
@@ -132,6 +145,7 @@ def postprocess_body(html: str) -> str:
         '<span class="tag-badge tag-fork">fork</span>',
     )
     html = tag_video_links(html)
+    html = open_external_links_in_new_tab(html)
     return html
 
 
@@ -218,7 +232,7 @@ def build_html(
     <div class="wrap">
       <div id="google_translate_element" class="site-translate"></div>
       <h1>{title}</h1>
-      <p class="meta">Version {version} · {date} · {status} · by <a href="https://github.com/selloa">selloa</a></p>
+      <p class="meta">Version {version} · {date} · {status} · by <a href="https://github.com/selloa" target="_blank" rel="noopener noreferrer">selloa</a></p>
     </div>
   </header>
   <div class="site-layout">
@@ -229,7 +243,7 @@ def build_html(
     </main>
   </div>
   <footer class="site-footer">
-    <p>Built from <code>{source_name}</code> · v{version} · {date} · <a href="https://github.com/selloa">selloa</a></p>
+    <p>Built from <code>{source_name}</code> · v{version} · {date} · <a href="https://github.com/selloa" target="_blank" rel="noopener noreferrer">selloa</a></p>
   </footer>
   <a href="#" class="back-top" id="backTop" aria-label="Back to top">↑ Top</a>
   <script>
