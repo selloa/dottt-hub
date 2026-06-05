@@ -1,7 +1,7 @@
 ---
 title: Day of the Tentacle Theatre Things
 version: 0.1.0
-date: 2026-06-05
+date: *
 status: early ideas
 description: a dott community
 ---

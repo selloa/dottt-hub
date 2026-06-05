@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 import sys
 import unicodedata
+from datetime import date
 from pathlib import Path
 
 import markdown
@@ -30,6 +31,7 @@ VIDEO_HOST = re.compile(
 )
 URL_LINE = re.compile(r"^https?://\S+$")
 TITLE_SKIP = re.compile(r"^(#|[-*]|\[|<|http|\*\*)")
+DATE_WILDCARDS = frozenset({"*", "auto", "today"})
 
 
 def slugify(value: str, separator: str) -> str:
@@ -54,6 +56,13 @@ def parse_front_matter(text: str) -> tuple[dict[str, str], str]:
             key, value = line.split(":", 1)
             meta[key.strip()] = value.strip()
     return meta, text[match.end() :]
+
+
+def resolve_build_date(meta: dict[str, str]) -> str:
+    raw = meta.get("date", "").strip()
+    if not raw or raw.lower() in DATE_WILDCARDS:
+        return date.today().isoformat()
+    return raw
 
 
 def strip_internal_sections(text: str) -> str:
@@ -279,6 +288,7 @@ def build_page(source_rel: str, output_rel: str, page_id: str) -> bool:
 
     raw = source.read_text(encoding="utf-8")
     meta, content = parse_front_matter(raw)
+    meta = {**meta, "date": resolve_build_date(meta)}
     content = strip_internal_sections(content)
     content = preprocess_bare_urls(content)
 

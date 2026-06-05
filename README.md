@@ -25,7 +25,9 @@ python build.py
 
 Double-click **`serve.bat`** to rebuild and open the site in your browser.
 
-After editing Markdown, bump `version` and `date` in the YAML front matter when you want, run `python build.py`, then commit both the `.md` source and generated `index.html`.
+After editing Markdown, bump `version` in the YAML front matter when you want, run `python build.py`, then commit both the `.md` source and generated `index.html`.
+
+Set `date: *` (or `auto` / `today`) in front matter to stamp the build with today's date. A fixed date like `date: 2026-06-05` is kept as-is.
 
 ## GitHub Pages
 
