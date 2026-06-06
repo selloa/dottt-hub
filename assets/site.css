@@ -1314,7 +1314,7 @@ body {
   border: 1px solid rgba(88, 166, 255, 0.3);
 }
 
-/* Sidebar h1 / h2 hierarchy (build.py) */
+/* Sidebar heading hierarchy (build.py) */
 .site-sidebar li.sidebar-h1 a {
   font-weight: 600;
   color: #c9d1d9;
@@ -1323,6 +1323,16 @@ body {
 .site-sidebar li.sidebar-h2 a {
   padding-left: 1rem;
   font-size: 0.75rem;
+}
+
+.site-sidebar li.sidebar-h3 a {
+  padding-left: 2rem;
+  font-size: 0.75rem;
+}
+
+.site-sidebar li.sidebar-h4 a {
+  padding-left: 3rem;
+  font-size: 0.7rem;
 }
 
 body.markdown-export[data-theme="dark"] .site-sidebar li.sidebar-h1 a {

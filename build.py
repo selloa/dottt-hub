@@ -23,7 +23,7 @@ INTERNAL_SECTION = re.compile(r"^## Page build notes\b", re.MULTILINE)
 HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 FRONT_MATTER = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n", re.DOTALL)
 PRE_BLOCK = re.compile(r"<pre>(.*?)</pre>", re.DOTALL)
-HEADING = re.compile(r'<h([12]) id="([^"]+)">(.*?)</h\1>', re.DOTALL)
+HEADING = re.compile(r'<h([1-4]) id="([^"]+)">(.*?)</h\1>', re.DOTALL)
 ANCHOR_TAG = re.compile(r'<a href="([^"]*)"([^>]*)>', re.IGNORECASE)
 VIDEO_HOST = re.compile(
     r"https?://(?:www\.)?(?:youtube\.com|youtu\.be|vimeo\.com|twitch\.tv|dailymotion\.com)",
@@ -88,6 +88,10 @@ def preprocess_bare_urls(text: str) -> str:
             ):
                 result.append(f"[{title_line}]({url_line})")
                 i += 2
+                while i < len(lines) and URL_LINE.match(lines[i].strip()):
+                    result.append("")
+                    result.append(f"[{title_line}]({lines[i].strip()})")
+                    i += 1
                 continue
         result.append(lines[i])
         i += 1
@@ -153,7 +157,7 @@ def extract_sidebar_nav(body_html: str) -> str:
     items = []
     for level, slug, raw_title in HEADING.findall(body_html):
         title = re.sub(r"<[^>]+>", "", raw_title).strip()
-        css_class = "sidebar-h1" if level == "1" else "sidebar-h2"
+        css_class = f"sidebar-h{level}"
         items.append(f'        <li class="{css_class}"><a href="#{slug}">{title}</a></li>')
     if not items:
         return ""
